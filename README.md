@@ -75,4 +75,4 @@ npm run build
 
 | Variable | Valeur |
 |---|---|
-| `VITE_API_URL` | URL de l'API Railway (ex: `https://m-motors-backend.railway.app/api`) |
+| `VITE_API_URL` | `https://m-motors-backend-production.up.railway.app/api` |
