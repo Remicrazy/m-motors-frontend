@@ -22,7 +22,14 @@ export default function LoginPage() {
     setError('');
     try {
       const auth = await authService.login(data.email, data.password);
-      queryClient.clear();
+      // Injecter directement les données user dans le cache pour éviter un appel /me
+      queryClient.setQueryData(['me'], {
+        id: auth.id,
+        email: auth.email,
+        nom: auth.nom,
+        prenom: auth.prenom,
+        role: auth.role,
+      });
       navigate(auth.role === 'ADMIN' ? '/admin' : '/mon-espace');
     } catch {
       setError('Identifiants invalides');

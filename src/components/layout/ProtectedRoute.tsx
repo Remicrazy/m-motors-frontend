@@ -5,17 +5,24 @@ import { authService } from '../../services/auth.service';
 interface Props { adminOnly?: boolean; }
 
 export default function ProtectedRoute({ adminOnly = false }: Props) {
-  const { data: me, isLoading, isError } = useQuery({
+  const isAuth = authService.isAuthenticated();
+
+  const { data: me, isLoading } = useQuery({
     queryKey: ['me'],
     queryFn: () => authService.getMe(),
-    enabled: authService.isAuthenticated(),
-    retry: false,
+    enabled: isAuth,
+    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 min — évite les appels répétés
   });
 
-  if (!authService.isAuthenticated()) return <Navigate to="/login" replace />;
-  if (isLoading) return <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" /></div>;
-  if (isError) return <Navigate to="/login" replace />;
-  if (adminOnly && me?.role !== 'ADMIN') return <Navigate to="/" replace />;
+  if (!isAuth) return <Navigate to="/login" replace />;
+  if (isLoading && !me) return (
+    <div className="flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+    </div>
+  );
+  if (!me) return <Navigate to="/login" replace />;
+  if (adminOnly && me.role !== 'ADMIN') return <Navigate to="/" replace />;
 
   return <Outlet />;
 }
