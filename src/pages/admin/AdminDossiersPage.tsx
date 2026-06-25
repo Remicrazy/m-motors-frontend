@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dossiersService } from '../../services/dossiers.service';
 import type { DossierStatut } from '../../types';
-import { CheckCircle, XCircle, Clock, ChevronDown } from 'lucide-react';
+import { CheckCircle, XCircle, ChevronDown } from 'lucide-react';
 
 const statusColors: Record<string, string> = {
   EN_ATTENTE: 'bg-yellow-100 text-yellow-700',

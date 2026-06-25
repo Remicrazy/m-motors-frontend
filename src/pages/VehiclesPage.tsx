@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, Link } from 'react-router-dom';
-import { vehiclesService, VehicleFilters } from '../services/vehicles.service';
+import { vehiclesService, type VehicleFilters } from '../services/vehicles.service';
 import { Search, SlidersHorizontal } from 'lucide-react';
 import type { VehicleType } from '../types';
 

@@ -1,32 +1,78 @@
-# React + TypeScript + Vite
+# M-Motors — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interface web développée avec **React 18 + TypeScript + Vite** pour la plateforme M-Motors.
 
-Currently, two official plugins are available:
+## Stack technique
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Technologie | Usage |
+|---|---|
+| React 18 + TypeScript | Framework UI |
+| Vite | Bundler + dev server |
+| Tailwind CSS 3 | Styles utilitaires |
+| React Router v6 | Navigation SPA |
+| TanStack Query (React Query) | Gestion des données serveur |
+| React Hook Form + Zod | Formulaires + validation |
+| Axios | Appels API HTTP |
+| Lucide React | Icônes |
+| Vercel | Hébergement frontend |
 
-## React Compiler
+## Pages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Route | Accès | Description |
+|---|---|---|
+| `/` | Public | Page d'accueil |
+| `/vehicules` | Public | Catalogue avec filtres (US-01, US-02) |
+| `/vehicules/:id` | Public | Fiche détaillée + dépôt dossier (US-03, US-07) |
+| `/login` | Public | Connexion (US-05) |
+| `/inscription` | Public | Création de compte (US-04) |
+| `/mon-espace` | Client | Tableau de bord + liste dossiers (US-09) |
+| `/mon-espace/dossier/:id` | Client | Détail + upload documents (US-08) |
+| `/admin` | Admin | Tableau de bord admin |
+| `/admin/vehicules` | Admin | Gestion catalogue (US-11, US-12, US-13) |
+| `/admin/dossiers` | Admin | Validation dossiers (US-14, US-15) |
 
-## Expanding the Oxlint configuration
+## Lancer en local
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Prérequis
+- Node.js 18+
+- Backend M-Motors démarré sur le port 8080
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+### Installation
+
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Configuration
+
+Copier `.env.example` en `.env` :
+
+```bash
+cp .env.example .env
+```
+
+Contenu de `.env` :
+
+```env
+VITE_API_URL=http://localhost:8080/api
+```
+
+### Démarrer
+
+```bash
+npm run dev
+```
+
+L'application sera disponible sur `http://localhost:5173`
+
+## Build production
+
+```bash
+npm run build
+```
+
+## Variables d'environnement Vercel
+
+| Variable | Valeur |
+|---|---|
+| `VITE_API_URL` | URL de l'API Railway (ex: `https://m-motors-backend.railway.app/api`) |

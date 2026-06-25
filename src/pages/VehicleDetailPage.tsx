@@ -88,7 +88,7 @@ export default function VehicleDetailPage() {
                   { key: 'assistance', icon: Phone, label: 'Assistance dépannage' },
                   { key: 'entretien', icon: Wrench, label: 'Entretien & SAV' },
                   { key: 'controleTechnique', icon: Car, label: 'Contrôle technique' },
-                ].map(({ key, icon: Icon, label }) => (
+                ].map(({ key, label }) => (
                   vehicle.lldOption![key as keyof typeof vehicle.lldOption] && (
                     <div key={key} className="flex items-center gap-2 text-sm text-green-700">
                       <CheckCircle size={16} /> {label}

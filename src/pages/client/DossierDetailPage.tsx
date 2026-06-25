@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dossiersService } from '../../services/dossiers.service';
-import { Upload, FileText, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Upload, FileText, CheckCircle } from 'lucide-react';
 import { useRef } from 'react';
 
 const statusColors: Record<string, string> = {

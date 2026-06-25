@@ -4,10 +4,17 @@ import { vehiclesService } from '../../services/vehicles.service';
 import { useForm } from 'react-hook-form';
 import { Plus, ArrowLeftRight } from 'lucide-react';
 
+interface VehicleFormData {
+  marque: string; modele: string; annee: number; km: number; prix: number;
+  type: string; description?: string;
+  lldOption?: { assurance?: boolean; assistance?: boolean; entretien?: boolean;
+    controleTechnique?: boolean; prixMensuel12?: number; prixMensuel24?: number; prixMensuel36?: number; };
+}
+
 export default function AdminVehiclesPage() {
   const qc = useQueryClient();
   const [showForm, setShowForm] = useState(false);
-  const { register, handleSubmit, reset, watch } = useForm({ defaultValues: { type: 'ACHAT' } });
+  const { register, handleSubmit, reset, watch } = useForm<VehicleFormData>({ defaultValues: { type: 'ACHAT' } });
   const type = watch('type');
 
   const { data: vehicles = [], isLoading } = useQuery({
@@ -49,7 +56,7 @@ export default function AdminVehiclesPage() {
             ].map(({ name, label, type: t }) => (
               <div key={name}>
                 <label className="block text-sm font-medium text-gray-600 mb-1">{label}</label>
-                <input {...register(name)} type={t} required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <input {...register(name as keyof VehicleFormData)} type={t} required className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
             ))}
             <div>
