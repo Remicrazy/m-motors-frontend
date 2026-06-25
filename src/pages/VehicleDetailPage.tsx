@@ -10,6 +10,7 @@ export default function VehicleDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
+  const [depositError, setDepositError] = useState('');
   const [duree, setDuree] = useState(24);
 
   const { data: vehicle, isLoading } = useQuery({
@@ -20,6 +21,7 @@ export default function VehicleDetailPage() {
   const handleDeposer = async () => {
     if (!authService.isAuthenticated()) { navigate('/login'); return; }
     setSubmitting(true);
+    setDepositError('');
     try {
       const dossier = await dossiersService.create(
         vehicle!.id,
@@ -27,6 +29,9 @@ export default function VehicleDetailPage() {
         vehicle!.type === 'LOCATION' ? duree : undefined,
       );
       navigate(`/mon-espace/dossier/${dossier.id}`);
+    } catch (e: any) {
+      // Ne pas vider le token — afficher l'erreur à l'utilisateur
+      setDepositError(e.response?.data?.message || 'Une erreur est survenue. Réessayez.');
     } finally {
       setSubmitting(false);
     }
@@ -97,6 +102,10 @@ export default function VehicleDetailPage() {
                 ))}
               </div>
             </div>
+          )}
+
+          {depositError && (
+            <div className="bg-red-50 text-red-700 p-3 rounded-lg text-sm mb-2">{depositError}</div>
           )}
 
           <button onClick={handleDeposer} disabled={submitting || vehicle.statut !== 'DISPONIBLE'}

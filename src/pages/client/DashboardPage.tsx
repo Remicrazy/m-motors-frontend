@@ -51,7 +51,7 @@ export default function DashboardPage() {
                     <p className="font-bold text-gray-800">{d.vehicle.marque} {d.vehicle.modele}</p>
                     <p className="text-sm text-gray-500">{d.type === 'ACHAT' ? 'Dossier achat' : 'Dossier location LLD'}</p>
                     <p className="text-xs text-gray-400 mt-1">
-                      {d.documents.length} document{d.documents.length > 1 ? 's' : ''} · {new Date(d.createdAt).toLocaleDateString('fr-FR')}
+                      {(d.documents ?? []).length} document{(d.documents ?? []).length > 1 ? 's' : ''} · {new Date(d.createdAt).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
                   <span className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${status.color}`}>

@@ -71,16 +71,16 @@ export default function DossierDetailPage() {
           <p className="font-medium mb-2">Documents obligatoires :</p>
           <ul className="list-disc list-inside space-y-1">
             {docNames.map((n) => (
-              <li key={n} className={dossier.documents.some((d) => d.nom.toLowerCase().includes(n.split(' ')[0].toLowerCase())) ? 'line-through opacity-50' : ''}>
+              <li key={n} className={(dossier.documents ?? []).some((d) => d.nom.toLowerCase().includes(n.split(' ')[0].toLowerCase())) ? 'line-through opacity-50' : ''}>
                 {n}
               </li>
             ))}
           </ul>
         </div>
 
-        {dossier.documents.length > 0 && (
+        {(dossier.documents ?? []).length > 0 && (
           <div className="space-y-2 mb-4">
-            {dossier.documents.map((doc) => (
+            {(dossier.documents ?? []).map((doc) => (
               <a key={doc.id} href={doc.url} target="_blank" rel="noreferrer"
                 className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                 <FileText size={18} className="text-blue-500" />
