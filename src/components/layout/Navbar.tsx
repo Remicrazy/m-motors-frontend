@@ -1,21 +1,20 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { authService } from '../../services/auth.service';
 import { LogOut, Car, User, LayoutDashboard } from 'lucide-react';
+import type { User as UserType } from '../../types';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const isAuth = authService.isAuthenticated();
 
-  const { data: me } = useQuery({
-    queryKey: ['me'],
-    queryFn: () => authService.getMe(),
-    enabled: isAuth,
-    retry: false,
-  });
+  // Lire le cache directement — pas de refetch automatique dans la navbar
+  const me = queryClient.getQueryData<UserType>(['me']);
 
   const handleLogout = () => {
     authService.logout();
+    queryClient.clear();
     navigate('/login');
   };
 

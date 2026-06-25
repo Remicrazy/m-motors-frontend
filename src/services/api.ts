@@ -14,11 +14,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    const isLoginPage = window.location.pathname === '/login' ||
-                        window.location.pathname === '/inscription';
-    if (error.response?.status === 401 && !isLoginPage) {
+    // Rediriger vers login UNIQUEMENT si la vérification d'identité échoue
+    // Pas pour les requêtes de données (dossiers, vehicles, etc.)
+    const url = error.config?.url ?? '';
+    const isIdentityCheck = url.endsWith('/auth/me');
+    const isLoginPage = window.location.pathname === '/login';
+
+    if (error.response?.status === 401 && isIdentityCheck && !isLoginPage) {
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
       window.location.href = '/login';
     }
     return Promise.reject(error);
