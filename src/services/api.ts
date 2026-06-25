@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
-  withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  withCredentials: false,
 });
 
 api.interceptors.request.use((config) => {
@@ -14,7 +14,9 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    if (error.response?.status === 401) {
+    const isLoginPage = window.location.pathname === '/login' ||
+                        window.location.pathname === '/inscription';
+    if (error.response?.status === 401 && !isLoginPage) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       window.location.href = '/login';

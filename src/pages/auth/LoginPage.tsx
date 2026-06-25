@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { authService } from '../../services/auth.service';
 import { useState } from 'react';
 
@@ -13,14 +14,16 @@ type Form = z.infer<typeof schema>;
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [error, setError] = useState('');
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Form>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: Form) => {
     setError('');
     try {
-      await authService.login(data.email, data.password);
-      navigate('/mon-espace');
+      const auth = await authService.login(data.email, data.password);
+      queryClient.clear();
+      navigate(auth.role === 'ADMIN' ? '/admin' : '/mon-espace');
     } catch {
       setError('Identifiants invalides');
     }

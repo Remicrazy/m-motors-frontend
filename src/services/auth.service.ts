@@ -1,16 +1,25 @@
 import api from './api';
-import type { AuthTokens, User } from '../types';
+import type { User } from '../types';
+
+export interface AuthResponse {
+  accessToken: string;
+  id: string;
+  email: string;
+  nom: string;
+  prenom: string;
+  role: 'CLIENT' | 'ADMIN';
+}
 
 export const authService = {
-  async register(data: { nom: string; prenom: string; email: string; telephone: string; password: string }): Promise<AuthTokens> {
+  async register(data: { nom: string; prenom: string; email: string; telephone: string; password: string }): Promise<AuthResponse> {
     const res = await api.post('/auth/register', data);
-    this.saveTokens(res.data);
+    localStorage.setItem('accessToken', res.data.accessToken);
     return res.data;
   },
 
-  async login(email: string, password: string): Promise<AuthTokens> {
+  async login(email: string, password: string): Promise<AuthResponse> {
     const res = await api.post('/auth/login', { email, password });
-    this.saveTokens(res.data);
+    localStorage.setItem('accessToken', res.data.accessToken);
     return res.data;
   },
 
@@ -21,12 +30,6 @@ export const authService = {
 
   logout() {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  },
-
-  saveTokens(tokens: AuthTokens) {
-    localStorage.setItem('accessToken', tokens.accessToken);
-    localStorage.setItem('refreshToken', tokens.refreshToken);
   },
 
   isAuthenticated(): boolean {
